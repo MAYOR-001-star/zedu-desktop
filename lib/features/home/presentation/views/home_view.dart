@@ -140,6 +140,7 @@ class _ChatAreaSwitcher extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(homeSidebarProvider);
     final selectedDm = ref.watch(selectedDmProvider);
+    final activeChat = ref.watch(activeChatProvider);
 
     if (state == HomeSidebarType.dms) {
       if (selectedDm != null) {
@@ -147,6 +148,12 @@ class _ChatAreaSwitcher extends ConsumerWidget {
       } else {
         return const DmEmptyState();
       }
+    }
+    // A DM picked in the Home sidebar opens here, and Home stays selected.
+    if (activeChat.type == ActiveChatType.directMessage &&
+        selectedDm != null &&
+        selectedDm.channelId == activeChat.id) {
+      return DmChatArea(conversation: selectedDm);
     }
     return const HomeChatArea();
   }
@@ -221,10 +228,10 @@ class _MainSidebar extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               children: [
-                Icon(Icons.arrow_right, color: colors.onPrimary, size: 20),
+                Icon(Icons.arrow_drop_down, color: colors.onPrimary, size: 20),
                 const SizedBox(width: 8),
                 Text(
-                  'People',
+                  'Direct messages',
                   style: TextStyle(
                     color: colors.onPrimary,
                     fontWeight: FontWeight.bold,
@@ -234,6 +241,8 @@ class _MainSidebar extends ConsumerWidget {
               ],
             ),
           ),
+          const SizedBox(height: 8),
+          const Flexible(child: SidebarDmList()),
         ],
       ),
     );
