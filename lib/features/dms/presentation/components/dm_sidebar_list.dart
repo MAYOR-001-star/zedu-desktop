@@ -7,6 +7,7 @@ class DmSidebarList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colors = context.colors;
+    final userId = ref.watch(authNotifierProvider.select((s) => s.user?.id));
 
     return Container(
       width: 320,
@@ -65,7 +66,9 @@ class DmSidebarList extends ConsumerWidget {
                       style: TextStyle(color: colors.error),
                     ),
                   ),
-                  data: (conversations) {
+                  data: (loaded) {
+                    // Your own space is pinned to the top of the list.
+                    final conversations = ownSpaceFirst(loaded, userId);
                     if (conversations.isEmpty) {
                       return Center(
                         child: Text(
