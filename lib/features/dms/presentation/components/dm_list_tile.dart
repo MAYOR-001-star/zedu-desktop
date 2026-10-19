@@ -32,6 +32,8 @@ class DmListTile extends ConsumerWidget {
     final selected = ref.watch(selectedDmProvider);
     final isSelected = selected?.channelId == conversation.channelId;
     final hasUnread = conversation.unreadCount > 0;
+    final userId = ref.watch(authNotifierProvider.select((s) => s.user?.id));
+    final isOwnSpace = conversation.isOwnSpaceOf(userId);
 
     return InkWell(
       onTap: () {
@@ -72,8 +74,20 @@ class DmListTile extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    conversation.displayName,
+                  Text.rich(
+                    TextSpan(
+                      text: conversation.displayName,
+                      children: [
+                        if (isOwnSpace)
+                          TextSpan(
+                            text: ' (you)',
+                            style: TextStyle(
+                              color: colors.onPrimary.withValues(alpha: 0.6),
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                      ],
+                    ),
                     style: TextStyle(
                       color: colors.onPrimary,
                       fontSize: 13,
@@ -84,7 +98,9 @@ class DmListTile extends ConsumerWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    conversation.previewMessage,
+                    isOwnSpace
+                        ? 'Your notes and drafts'
+                        : conversation.previewMessage,
                     style: TextStyle(
                       color: colors.onPrimary.withValues(alpha: 0.86),
                       fontSize: 11,
