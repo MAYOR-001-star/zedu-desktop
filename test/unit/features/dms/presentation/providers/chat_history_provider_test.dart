@@ -43,7 +43,9 @@ void main() {
       container = ProviderContainer(
         overrides: [dmRepositoryProvider.overrideWithValue(mockRepository)],
       );
-      notifier = container.listen(chatHistoryProvider('ch-1'), (previous, next) {}).read();
+      notifier = container
+          .listen(chatHistoryProvider('ch-1'), (previous, next) {})
+          .read();
       await pumpEventQueue();
     });
 
@@ -289,7 +291,9 @@ void _deleteTests() {
       container = ProviderContainer(
         overrides: [dmRepositoryProvider.overrideWithValue(mockRepository)],
       );
-      notifier = container.listen(chatHistoryProvider('ch-1'), (previous, next) {}).read();
+      notifier = container
+          .listen(chatHistoryProvider('ch-1'), (previous, next) {})
+          .read();
       await pumpEventQueue();
     });
 
@@ -368,7 +372,9 @@ void _loadErrorTests() {
         return page(2, 'm');
       });
 
-      final notifier = container.listen(chatHistoryProvider('ch-1'), (previous, next) {}).read();
+      final notifier = container
+          .listen(chatHistoryProvider('ch-1'), (previous, next) {})
+          .read();
       await pumpEventQueue();
 
       expect(notifier.loadFailed, isTrue);
@@ -387,7 +393,9 @@ void _loadErrorTests() {
         () => mockRepository.getMessages(any(), page: any(named: 'page')),
       ).thenAnswer((_) async => page(2, 'm'));
 
-      final notifier = container.listen(chatHistoryProvider('ch-1'), (previous, next) {}).read();
+      final notifier = container
+          .listen(chatHistoryProvider('ch-1'), (previous, next) {})
+          .read();
       await pumpEventQueue();
 
       expect(notifier.loadFailed, isFalse);
@@ -406,7 +414,9 @@ void _loadErrorTests() {
         return page(1, 'b');
       });
 
-      final notifier = container.listen(chatHistoryProvider('ch-1'), (previous, next) {}).read();
+      final notifier = container
+          .listen(chatHistoryProvider('ch-1'), (previous, next) {})
+          .read();
       await pumpEventQueue();
       await notifier.loadMore();
 
@@ -464,7 +474,9 @@ void _retryTests() {
           authNotifierProvider.overrideWith(_FakeAuthNotifier.new),
         ],
       );
-      notifier = container.listen(chatHistoryProvider('channel-xyz'), (previous, next) {}).read();
+      notifier = container
+          .listen(chatHistoryProvider('channel-xyz'), (previous, next) {})
+          .read();
       await pumpEventQueue();
     });
 
@@ -564,7 +576,10 @@ void _retryTests() {
     );
 
     test('auto-disposes ChatHistoryNotifier when listener closes', () async {
-      final sub = container.listen(chatHistoryProvider('ch-auto'), (previous, next) {});
+      final sub = container.listen(
+        chatHistoryProvider('ch-auto'),
+        (previous, next) {},
+      );
       final autoNotifier = sub.read();
       // ignore: invalid_use_of_protected_member
       expect(autoNotifier.hasListeners, isTrue);
@@ -572,7 +587,10 @@ void _retryTests() {
       sub.close();
       await pumpEventQueue();
 
-      expect(() => autoNotifier.notifyListeners(), throwsA(isA<FlutterError>()));
+      expect(
+        () => autoNotifier.notifyListeners(),
+        throwsA(isA<FlutterError>()),
+      );
     });
   });
 }
@@ -622,7 +640,9 @@ void _clearHistoryTests() {
         ],
       );
       addTearDown(container.dispose);
-      final notifier = container.listen(chatHistoryProvider('ch-1'), (previous, next) {}).read();
+      final notifier = container
+          .listen(chatHistoryProvider('ch-1'), (previous, next) {})
+          .read();
       await pumpEventQueue();
       return notifier;
     }
