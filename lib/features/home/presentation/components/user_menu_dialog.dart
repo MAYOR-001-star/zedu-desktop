@@ -264,6 +264,14 @@ class UserMenuDialog extends ConsumerWidget {
                   if (context.mounted) context.go(AppRouter.buyCredits);
                 },
               ),
+              _MenuItemButton(
+                icon: Icons.card_giftcard_outlined,
+                label: 'Referrals & Rewards',
+                onTap: () {
+                  Navigator.pop(context);
+                  if (context.mounted) context.go(AppRouter.referral);
+                },
+              ),
               const SizedBox(height: 8),
               Divider(height: 0, color: colors.divider),
               const SizedBox(height: 8),
