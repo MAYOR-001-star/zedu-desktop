@@ -15,6 +15,7 @@ class AppRouter {
   static const profile = '/profile';
   static const createOrganization = '/create-organization';
   static const buyCredits = '/credits/buy';
+  static const referral = '/referral';
 
   /// The root Navigator. Widgets mounted from [App]'s `builder` sit above the
   /// Navigator, so they reach the Overlay and the router through this key
@@ -99,6 +100,10 @@ class AppRouter {
       GoRoute(
         path: buyCredits,
         builder: (context, state) => const BuyCreditsView(),
+      ),
+      GoRoute(
+        path: referral,
+        builder: (context, state) => const ReferralView(),
       ),
     ],
   );
